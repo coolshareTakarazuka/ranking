@@ -32,9 +32,116 @@
       th {
         background-color: #f2f2f2;
       }
+    
     </style>
-  </head>
+  
+
+</head>
   <body>
+
+    <header>
+      <div id="loading">
+    <div class="loading-content">
+        <img src="https://i.ibb.co/Wv8X3LVh/1.png">
+      <h2>ランキングの準備中です！！</h2>
+      <h2>loading・・・</h2>
+      
+    </div>
+  </div>
+  
+  <style>
+    #loading{
+        transition: all 1s;
+        background-color: #ffffff;
+        position:fixed;
+        z-index: 999;
+        inset: 0;
+        display: grid;
+        place-items:center;            
+    }
+  
+    #loading img{
+        width: 40%;
+        animation: slide 4s linear infinite;
+        position: relative;
+    }
+  
+    .loading-content{
+        width: 100vw;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+  
+    @keyframes slide {
+        0% {
+            transform: translateX(-100%);
+        }
+        100%{
+            transform: translateX(200%);
+        }
+    }
+  
+    #loading h2 {
+        animation:fadeIn 5s linear infinite;
+        position:relative;
+        
+    }
+    
+    @keyframes fadeIn{
+        0% {opacity: 0}
+        50% {opacity : 1}
+        100% {opacity: 0}
+  
+    }
+  
+  
+  .loadEnd{
+      opacity: 0;
+      visibility: hidden;
+      }
+  
+  
+  
+  
+  
+  </style>  
+  
+  <script>
+    document.addEventListener("DOMContentLoaded",() => {
+      const loading = document.getElementById("loading");
+      const csvDisplay = [
+       document.getElementById("rankingTable"),
+       document.getElementById("rankingTable2"),
+       document.getElementById("rankingTable3")
+      ];
+      
+      const csvUrls = [
+        'https://docs.google.com/spreadsheets/d/1uT8SDMehs1kukY2iLoJTwdk6EogvCIS5un5e5Tl1zCI/gviz/tq?tqx=out:csv',
+        'https://docs.google.com/spreadsheets/d/1PgmeAx5GLjLVXEXZfJsHKZDaKIbTHyMmHKQIFRtvHw0/gviz/tq?tqx=out:csv',
+        'https://docs.google.com/spreadsheets/d/15nY4oq2hRCuuL3ykHnQctQR4gpm0LcCLGaqHL1kOCgA/gviz/tq?tqx=out:csv'
+      ];
+  
+      const fetchPromises = csvUrls.map(url =>
+        fetch(url).then(response => {
+          if (!response.ok) throw new Error(`fetch failed for ${url}`);
+          return response.text();
+        })
+      );
+  
+      Promise.all(fetchPromises)
+        .then(csvTexts => {
+          csvTexts.forEach((text,i) => {
+            if(csvDisplays[i]){
+              
+            }
+          });
+          const element = document.querySelector('#loading')
+        element.classList.add('loadEnd');
+        })
+    })
+  </script>
+
     <h1>
       <img
         src="https://i.ibb.co/Wv8X3LVh/1.png"
@@ -110,6 +217,7 @@
           `;
             tableBody.appendChild(row);
           });
+          document.getElementById("loading").classList.add("loadEnd");
         })
         .catch((error) => console.error("Error fetching CSV 1:", error));
 
@@ -135,6 +243,7 @@
           `;
             tableBody2.appendChild(row2);
           });
+          document.getElementById("loading").classList.add("loadEnd");
         })
         .catch((error) => console.error("Error fetching CSV 2:", error));
 
@@ -159,7 +268,9 @@
           `;
             tableBody3.appendChild(row3);
           });
+          document.getElementById("loading").classList.add("loadEnd");
         })
+
         .catch((error) => console.error("Error fetching CSV 3:", error));
     </script>
 
