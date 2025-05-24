@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>マイページ</title>
+    <script
+      src="https://kit.fontawesome.com/d0a601627a.js"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://yubinbango.github.io/yubinbango/yubinbango.js"
+      charset="UTF-8"
+    ></script>
+    <link
+      href="https://use.fontawesome.com/releases/v5.6.1/css/all.css"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+    <style>
+      table {
+        border-collapse: collapse;
+        width: 80%;
+        margin: 20px auto;
+      }
+      th,
+      td {
+        border: 1px solid #ccc;
+        padding: 8px 12px;
+        text-align: center;
+      }
+      th {
+        background-color: #f2f2f2;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>
+      <img
+        src="https://i.ibb.co/Wv8X3LVh/1.png"
+        alt="IMG-5451"
+        width="100px"
+        height="100px"
+      />
+      クールシェアたからづか<br />2025<br />マイページ
+    </h1>
+
+    <h2 style="text-align: center">毎日チャレンジ王</h2>
+    <h3 style="text-align: center">連続でスタンプラリーに参加した日数</h3>
+
+    <table id="rankingTable">
+      <thead>
+        <tr>
+          <th>順位</th>
+          <th>連続日数</th>
+          <th>人数</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+
+    <h2 style="text-align: center">スタンプ獲得数</h2>
+    <h3 style="text-align: center">イベントで獲得したスタンプの数</h3>
+
+    <table id="rankingTable2">
+      <thead>
+        <tr>
+          <th>順位</th>
+          <th>スタンプ数</th>
+          <th>人数</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+
+    <h2 style="text-align: center">スポット数</h2>
+    <h3 style="text-align: center">イベントで獲得したスタンプの数</h3>
+
+    <table id="rankingTable3">
+      <thead>
+        <tr>
+          <th>順位</th>
+          <th>スポット数</th>
+          <th>人数</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+
+    <script>
+      // ✅ 1つ目のCSV: 連続参加ランキング
+      fetch(
+        "https://docs.google.com/spreadsheets/d/1uT8SDMehs1kukY2iLoJTwdk6EogvCIS5un5e5Tl1zCI/gviz/tq?tqx=out:csv"
+      )
+        .then((response) => response.text())
+        .then((csvText) => {
+          const parsedData = Papa.parse(csvText, { header: true });
+          const storeData = parsedData.data;
+
+          const tableBody = document.querySelector("#rankingTable tbody");
+
+          storeData.forEach((entry) => {
+            if (!entry.rank || !entry.data || !entry.people) return;
+
+            const row = document.createElement("tr");
+            row.innerHTML = `
+            <td>${entry.rank}位</td>
+            <td>${entry.data}</td>
+            <td>${entry.people}</td>
+          `;
+            tableBody.appendChild(row);
+          });
+        })
+        .catch((error) => console.error("Error fetching CSV 1:", error));
+
+      // ✅ 2つ目のCSV: スタンプ数ランキング（別のCSVを読み込む想定）
+      fetch(
+        "https://docs.google.com/spreadsheets/d/1PgmeAx5GLjLVXEXZfJsHKZDaKIbTHyMmHKQIFRtvHw0/gviz/tq?tqx=out:csv"
+      )
+        .then((response) => response.text())
+        .then((csvText) => {
+          const parsedData = Papa.parse(csvText, { header: true });
+          const stampData = parsedData.data;
+
+          const tableBody2 = document.querySelector("#rankingTable2 tbody");
+
+          stampData.forEach((entry) => {
+            if (!entry.rank2 || !entry.data2 || !entry.people2) return;
+
+            const row2 = document.createElement("tr");
+            row2.innerHTML = `
+            <td>${entry.rank2}位</td>
+            <td><i class="fa-solid fa-stamp"></i> ${entry.data2}</td>
+            <td>${entry.people2}人</td>
+          `;
+            tableBody2.appendChild(row2);
+          });
+        })
+        .catch((error) => console.error("Error fetching CSV 2:", error));
+
+      fetch(
+        "https://docs.google.com/spreadsheets/d/15nY4oq2hRCuuL3ykHnQctQR4gpm0LcCLGaqHL1kOCgA/gviz/tq?tqx=out:csv"
+      )
+        .then((response) => response.text())
+        .then((csvText) => {
+          const parsedData = Papa.parse(csvText, { header: true });
+          const stampData = parsedData.data;
+
+          const tableBody3 = document.querySelector("#rankingTable3 tbody");
+
+          stampData.forEach((entry) => {
+            if (!entry.rank3 || !entry.data3 || !entry.people3) return;
+
+            const row3 = document.createElement("tr");
+            row3.innerHTML = `
+            <td>${entry.rank3}位</td>
+            <td><i class="fa-solid fa-map-pin"></i> ${entry.data3}</td>
+            <td>${entry.people3}人</td>
+          `;
+            tableBody3.appendChild(row3);
+          });
+        })
+        .catch((error) => console.error("Error fetching CSV 3:", error));
+    </script>
+
+    <nav>
+      <ul class="menu">
+        <li>
+          <a href="https://coolsharetakarazuka.github.io/home/" target="_self"
+            ><i class="fa-solid fa-house"></i><br /><span class="iconname"
+              >ホーム</span
+            ></a
+          >
+        </li>
+        <li>
+          <a href="https://coolsharetakarazuka.github.io/map/" target="_self"
+            ><i class="fa-solid fa-location-dot"></i><br /><span
+              class="iconname"
+              >マップ</span
+            ></a
+          >
+        </li>
+        <li>
+          <a
+            href="
+      https://coolsharetakarazuka.github.io/how_to_play/"
+            target="_self"
+            ><i class="fa-regular fa-list-ol"></i><br /><span class="iconname"
+              >遊び方</span
+            ></a
+          >
+        </li>
+        <li>
+          <a href="https://liff.line.me/2007302862-3mj9r7W5" target="_self"
+            ><i class="fa-solid fa-circle-user"></i><br /><span class="iconname"
+              >マイページ</span
+            ></a
+          >
+        </li>
+      </ul>
+    </nav>
+
+    <style>
+      #mypage_content {
+        text-align: center;
+      }
+      .menu {
+        position: fixed;
+        left: 0;
+        bottom: 0;
+        background: white;
+        width: 100%;
+        display: flex;
+        justify-content: space-around;
+        padding: 10px 0;
+        box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+      }
+
+      .menu li {
+        display: inline-block;
+        text-align: center;
+      }
+
+      .menu a {
+        text-decoration: none;
+        color: black;
+      }
+
+      .menu a i {
+        font-size: 24px;
+      }
+
+      .menu a span {
+        display: block;
+        font-size: 12px; /* テキストサイズ */
+        margin-top: 5px;
+      }
+
+      @media (max-width: 768px) {
+        .menu {
+          display: grid;
+          grid-template-columns: repeat(4, 1fr);
+        }
+
+        .menu li {
+          padding: 5px;
+        }
+      }
+
+      h1 {
+        font-family: sans-serif;
+        display: flex;
+        align-items: center; /* 縦方向の中央揃え */
+        justify-content: center; /* 横方向の中央揃え */
+        text-align: center;
+        background: skyblue;
+        padding-top: 10px;
+        padding-bottom: 10px;
+        padding-left: 10px;
+        font-size: 85%;
+      }
+    </style>
+  </body>
+</html>
